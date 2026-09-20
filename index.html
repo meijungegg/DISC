@@ -219,6 +219,7 @@ blockquote { margin: 0; padding: 16px 18px; border-radius: 10px; background: col
 .note-you { padding: 14px 16px; border-radius: 10px; background: var(--surface-2); border: 1px dashed var(--line); }
 
 /* feedback */
+[hidden] { display: none !important; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .fb { padding: clamp(16px, 3vw, 28px); display: grid; gap: 20px; }
 .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -410,32 +411,33 @@ footer { padding-block: 28px 56px; color: var(--muted); font-size: 13px; border-
     </div>
     <form class="panel fb" id="fbForm" novalidate>
       <div class="fields">
-        <div class="field"><label for="fbName">暱稱（選填）</label><input id="fbName" name="fbName" type="text" maxlength="30" autocomplete="off" placeholder="例如：小明"></div>
-        <div class="field"><label for="fbType">我的 DISC 類型（選填）</label>
-          <select id="fbType" name="fbType"><option value="">還不確定</option><option value="D">D 掌控型・老虎</option><option value="I">I 影響型・孔雀</option><option value="S">S 穩健型・無尾熊</option><option value="C">C 謹慎型・貓頭鷹</option></select></div>
+        <div class="field"><label for="fbName">暱稱<span class="req">必填</span></label><input id="fbName" name="fbName" type="text" maxlength="30" aria-required="true" autocomplete="off" placeholder="例如：小明"></div>
+        <div class="field"><label for="fbType">我的 DISC 類型<span class="req">必填</span></label>
+          <select id="fbType" name="fbType" aria-required="true"><option value="" disabled selected>請選擇</option><option value="D">D 掌控型・老虎</option><option value="I">I 影響型・孔雀</option><option value="S">S 穩健型・無尾熊</option><option value="C">C 謹慎型・貓頭鷹</option></select></div>
       </div>
-      <fieldset class="group"><legend>最常用到哪個溝通方向？</legend>
+      <fieldset class="group"><legend>哪個溝通方向最困難？</legend>
         <div class="choices">
           <label class="choice"><input type="radio" name="fbDir" value="down" id="fbDirDown">上對下</label>
           <label class="choice"><input type="radio" name="fbDir" value="up" id="fbDirUp">下對上</label>
           <label class="choice"><input type="radio" name="fbDir" value="peer" id="fbDirPeer">平行</label>
         </div></fieldset>
-      <fieldset class="group"><legend>整體來說，這個頁面對你有幫助嗎？<span class="req">必填</span></legend>
+      <fieldset class="group"><legend>整體來說，這個策展對你的幫助度？<span class="req">必填</span></legend>
         <div class="choices rate">
-          <label class="choice"><input type="radio" name="fbRate" value="1" id="fbRate1">1</label>
-          <label class="choice"><input type="radio" name="fbRate" value="2" id="fbRate2">2</label>
-          <label class="choice"><input type="radio" name="fbRate" value="3" id="fbRate3">3</label>
-          <label class="choice"><input type="radio" name="fbRate" value="4" id="fbRate4">4</label>
           <label class="choice"><input type="radio" name="fbRate" value="5" id="fbRate5">5</label>
+          <label class="choice"><input type="radio" name="fbRate" value="4" id="fbRate4">4</label>
+          <label class="choice"><input type="radio" name="fbRate" value="3" id="fbRate3">3</label>
+          <label class="choice"><input type="radio" name="fbRate" value="2" id="fbRate2">2</label>
+          <label class="choice"><input type="radio" name="fbRate" value="1" id="fbRate1">1</label>
         </div>
-        <p class="hint">1 = 沒什麼幫助，5 = 非常有幫助</p></fieldset>
+        <p class="hint">5 = 非常有幫助，1 = 沒什麼幫助</p></fieldset>
       <fieldset class="group"><legend>哪些內容最有幫助？（可複選）</legend>
         <div class="choices">
           <label class="choice"><input type="checkbox" name="fbHelp" value="types" id="fbHelpTypes">四種風格介紹</label>
           <label class="choice"><input type="checkbox" name="fbHelp" value="quiz" id="fbHelpQuiz">自我測驗</label>
           <label class="choice"><input type="checkbox" name="fbHelp" value="guide" id="fbHelpGuide">溝通指南的說法</label>
-          <label class="choice"><input type="checkbox" name="fbHelp" value="animals" id="fbHelpAnimals">動物圖像</label>
-        </div></fieldset>
+          <label class="choice"><input type="checkbox" name="fbHelp" value="other" id="fbHelpOther">其他</label>
+        </div>
+        <div class="field" id="fbOtherWrap" hidden><label for="fbOther">其他有幫助的內容<span class="req">必填</span></label><input id="fbOther" name="fbOther" type="text" maxlength="100" aria-required="true" autocomplete="off" placeholder="請寫下其他對你有幫助的內容"></div></fieldset>
       <div class="field"><label for="fbText">想說的話或建議</label>
         <textarea id="fbText" name="fbText" rows="5" maxlength="1000" placeholder="例如：希望多一些「跨部門衝突」的情境說法。"></textarea></div>
       <div class="hp" aria-hidden="true"><label for="fbWebsite">網站</label><input id="fbWebsite" name="fbWebsite" type="text" tabindex="-1" autocomplete="off"></div>
@@ -702,17 +704,26 @@ document.querySelectorAll(".route button").forEach(b => b.addEventListener("clic
   const f = $("#fbForm"), st = $("#fbStatus"), btn = $("#fbSubmit");
   const say = (msg, cls) => { st.textContent = msg; st.className = "hint" + (cls ? " " + cls : ""); };
 
+  const otherCb = $("#fbHelpOther"), otherWrap = $("#fbOtherWrap");
+  const syncOther = () => { otherWrap.hidden = !otherCb.checked; };
+  otherCb.addEventListener("change", syncOther);
+  f.addEventListener("reset", () => setTimeout(syncOther));
+
   f.addEventListener("submit", async e => {
     e.preventDefault();
     if (f.elements.fbWebsite.value) { say("已送出，謝謝你的回饋！", "ok"); f.reset(); return; } // honeypot: bots fill this
+    if (!f.elements.fbName.value.trim()) { say("請填寫暱稱。", "err"); f.elements.fbName.focus(); return; }
+    if (!f.elements.fbType.value) { say("請選擇你的 DISC 類型。", "err"); f.elements.fbType.focus(); return; }
+    if (otherCb.checked && !f.elements.fbOther.value.trim()) { say("請填寫「其他」有幫助的內容。", "err"); f.elements.fbOther.focus(); return; }
     if (!f.elements.fbRate.value) { say("請先選擇 1–5 的整體評分。", "err"); return; }
     const row = {
-      name: f.elements.fbName.value.trim().slice(0, 30) || null,
-      disc_type: f.elements.fbType.value || null,
+      name: f.elements.fbName.value.trim().slice(0, 30),
+      disc_type: f.elements.fbType.value,
       quiz_type: lastQuiz || null,
       direction: f.elements.fbDir.value || null,
       rating: Number(f.elements.fbRate.value),
       helpful: Array.from(f.querySelectorAll('input[name="fbHelp"]:checked')).map(c => c.value),
+      helpful_other: otherCb.checked ? f.elements.fbOther.value.trim().slice(0, 100) : null,
       message: f.elements.fbText.value.trim().slice(0, 1000) || null
     };
     btn.disabled = true; say("送出中…");
