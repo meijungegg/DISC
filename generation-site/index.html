@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>上下同頻 主管部屬溝通</title>
+<meta name="description" content="跨世代職場溝通：主管與部屬如何把話說到對方心裡。">
+<style>
+  :root {
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --surface-2: #edf1f7;
+    --text: #1d2430;
+    --muted: #5f6b7d;
+    --accent: #2456d6;
+    --accent-2: #e0812f;
+    --good: #1f8a5b;
+    --bad: #c9453f;
+    --border: #dfe5ee;
+    --radius: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161d; --surface: #1a1f28; --surface-2: #232a36;
+      --text: #eef1f6; --muted: #a2adbd; --border: #2d3543;
+      --accent: #7ba2ff; --accent-2: #f2a15b; --good: #5cc79a; --bad: #ee7a74;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+  body {
+    font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.75;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+  }
+  nav { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .logo { font-weight: 800; font-size: 1.2rem; }
+  .logo span { color: var(--accent); }
+  nav ul { display: flex; gap: 20px; list-style: none; font-size: .93rem; color: var(--muted); }
+  nav ul a:hover { color: var(--text); }
+  @media (max-width: 760px) { nav ul { display: none; } }
+
+  .hero { padding: 80px 0 56px; text-align: center; }
+  .hero h1 { font-size: clamp(2rem, 5.5vw, 3.3rem); line-height: 1.3; font-weight: 800; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { color: var(--muted); max-width: 600px; margin: 18px auto 26px; font-size: 1.08rem; }
+
+  .hero-img { margin: 40px auto 0; max-width: 520px; background: #fff; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+  .hero-img img { display: block; width: 100%; height: auto; }
+
+  .btn {
+    display: inline-block; padding: 12px 28px; border-radius: 999px; font-weight: 700;
+    background: var(--accent); color: #fff; border: 0; cursor: pointer; font-size: 1rem;
+    transition: transform .15s, filter .15s; font-family: inherit;
+  }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  @media (prefers-color-scheme: dark) { .btn { color: #0c1220; } }
+
+  /* Role switch */
+  .role {
+    display: inline-flex; padding: 4px; border-radius: 999px; background: var(--surface-2);
+    border: 1px solid var(--border);
+  }
+  .role button {
+    border: 0; background: transparent; color: var(--muted); padding: 8px 22px; border-radius: 999px;
+    font-family: inherit; font-size: .95rem; font-weight: 700; cursor: pointer;
+  }
+  .role button.on { background: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .role button.on { color: #0c1220; } }
+  .role-line { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; color: var(--muted); font-size: .92rem; }
+
+  section { padding: 56px 0; }
+  .sec-head { margin-bottom: 24px; }
+  .sec-head h2 { font-size: 1.7rem; font-weight: 800; }
+  .sec-head p { color: var(--muted); }
+
+  /* Generations */
+  .gens { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .gen {
+    text-align: left; background: var(--surface); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 18px; cursor: pointer; font-family: inherit; color: var(--text);
+    transition: border-color .2s, transform .2s;
+  }
+  .gen:hover { transform: translateY(-3px); }
+  .gen.active { border-color: var(--accent); }
+  .gen .em { font-size: 1.8rem; }
+  .gen b { display: block; margin-top: 4px; }
+  .gen small { color: var(--muted); }
+  .detail {
+    margin-top: 18px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;
+  }
+  .detail h3 { font-size: 1rem; color: var(--accent); margin-bottom: 6px; }
+  .detail ul { padding-left: 1.2em; color: var(--muted); font-size: .95rem; }
+  .detail p { color: var(--muted); font-size: .95rem; }
+  .detail .full { grid-column: 1 / -1; }
+  .quote { font-size: 1.05rem; padding-left: 14px; border-left: 4px solid var(--accent-2); }
+  .todo { background: var(--surface-2); border-radius: 12px; padding: 16px 18px; }
+
+  /* Scenarios */
+  .scenarios { display: grid; gap: 14px; }
+  .scn { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .scn summary {
+    list-style: none; cursor: pointer; padding: 18px 22px; font-weight: 700;
+    display: flex; justify-content: space-between; gap: 12px;
+  }
+  .scn summary::after { content: "＋"; color: var(--accent); }
+  .scn[open] summary::after { content: "－"; }
+  .scn summary::-webkit-details-marker { display: none; }
+  .scn .body { padding: 0 22px 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 680px) { .scn .body { grid-template-columns: 1fr; } }
+  .bubble { border-radius: 12px; padding: 14px 16px; font-size: .95rem; }
+  .bubble.bad { background: color-mix(in srgb, var(--bad) 12%, var(--surface)); }
+  .bubble.good { background: color-mix(in srgb, var(--good) 14%, var(--surface)); }
+  .bubble b { display: block; font-size: .8rem; margin-bottom: 4px; letter-spacing: .5px; }
+  .scn .note { grid-column: 1 / -1; color: var(--muted); font-size: .92rem; }
+  .scn .note.other { background: var(--surface-2); padding: 12px 16px; border-radius: 12px; }
+
+  /* Feedback builder */
+  .builder { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 760px) { .builder { grid-template-columns: 1fr; } }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  label { display: block; font-size: .9rem; color: var(--muted); margin: 12px 0 4px; }
+  label:first-child { margin-top: 0; }
+  textarea, select, .search {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); font-size: 1rem; font-family: inherit;
+  }
+  textarea { resize: vertical; min-height: 64px; }
+  .out { display: flex; flex-direction: column; justify-content: space-between; gap: 14px; }
+  #fbOut { font-size: 1.05rem; padding: 16px 18px; border-radius: 12px; background: var(--surface-2); min-height: 120px; white-space: pre-wrap; }
+  .out small { color: var(--muted); }
+  .copy { align-self: flex-start; }
+
+  /* Glossary */
+  .search { padding: 12px 16px; border-radius: 12px; background: var(--surface); margin-bottom: 18px; }
+  .gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .term { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .term h4 { font-size: 1.1rem; }
+  .term .from { font-size: .78rem; color: var(--accent-2); }
+  .term p { color: var(--muted); font-size: .92rem; margin-top: 4px; }
+  .empty { color: var(--muted); grid-column: 1 / -1; }
+
+  /* 1:1 cards */
+  .starter { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; text-align: center; }
+  .pick { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 20px; }
+  .pick label { margin: 0; }
+  .pick select { width: auto; margin-left: 6px; }
+  #topic { font-size: 1.25rem; font-weight: 700; margin: 12px 0 22px; min-height: 3.4em; }
+
+  /* Principles */
+  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .pr { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+  .pr .n { font-size: 1.8rem; font-weight: 800; color: var(--accent-2); }
+  .pr h3 { margin: 4px 0; }
+  .pr p { color: var(--muted); font-size: .93rem; }
+
+  footer { border-top: 1px solid var(--border); padding: 30px 0; color: var(--muted); font-size: .85rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#top">上下<span>同頻</span></a>
+      <ul>
+        <li><a href="#gens">世代職場觀</a></li>
+        <li><a href="#scenes">情境練習</a></li>
+        <li><a href="#feedback">回饋產生器</a></li>
+        <li><a href="#slang">職場用語</a></li>
+        <li><a href="#starter">1:1 話題卡</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <h1>主管與部屬，<br>不是<em>不想懂</em>，是沒說到點上</h1>
+      <p>了解不同世代的職場期待，學會用對方聽得進去的方式交辦、回饋、反映與討論。</p>
+      <div class="role" data-role-switch></div>
+      <div style="margin-top:26px"><a class="btn" href="#scenes">開始練習情境</a></div>
+      <figure class="hero-img">
+        <img src="images/team-talk.webp" alt="不同世代的同事圍繞著點子與對話框交流想法" width="474" height="284">
+      </figure>
+    </div>
+  </div>
+
+  <section id="gens">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>各世代的職場觀</h2>
+        <p>點選世代，看看他們的工作價值與期待，以及你該怎麼和他們互動。</p>
+      </div>
+      <div class="role-line"><span>我的角色：</span><div class="role" data-role-switch></div></div>
+      <div class="gens" id="genList"></div>
+      <div class="detail" id="genDetail"></div>
+    </div>
+  </section>
+
+  <section id="scenes">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>情境練習：換個說法</h2>
+        <p>6 個主管與部屬最常卡住的場景，比較「容易起衝突」與「更容易被接受」的說法。</p>
+      </div>
+      <div class="role-line"><span>我的角色：</span><div class="role" data-role-switch></div></div>
+      <div class="scenarios" id="scenList"></div>
+    </div>
+  </section>
+
+  <section id="feedback">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>回饋句產生器</h2>
+        <p>使用 SBI 公式：情境（Situation）、行為（Behavior）、影響（Impact），把回饋說得具體、不帶批評。</p>
+      </div>
+      <div class="builder">
+        <div class="panel">
+          <label for="fbType">回饋類型</label>
+          <select id="fbType">
+            <option value="improve">需要改進</option>
+            <option value="praise">值得肯定</option>
+          </select>
+          <label for="fbS">情境：什麼時候、什麼場合？</label>
+          <textarea id="fbS">上週四的客戶簡報中</textarea>
+          <label for="fbB">行為：你具體看到什麼？</label>
+          <textarea id="fbB">報告的數字和附件有兩處不一致</textarea>
+          <label for="fbI">影響：造成什麼結果？</label>
+          <textarea id="fbI">客戶當場質疑資料的可信度</textarea>
+          <label for="fbN">下一步（選填）</label>
+          <textarea id="fbN">你覺得下次可以怎麼確認？我們一起討論一下</textarea>
+        </div>
+        <div class="panel out">
+          <div>
+            <div style="font-weight:700;margin-bottom:8px">產生結果</div>
+            <div id="fbOut"></div>
+          </div>
+          <button class="btn copy" id="copyBtn">複製句子</button>
+          <small>提醒：回饋越即時越有效，最好選在私下、雙方情緒穩定的時候說。</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="slang">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>職場用語字典</h2>
+        <p>同一句話，不同世代可能有不同解讀。搜尋一個詞看看。</p>
+      </div>
+      <input class="search" id="q" type="search" placeholder="輸入關鍵字，例如：躺平、畫大餅、1on1⋯" aria-label="搜尋用語">
+      <div class="gloss" id="gloss"></div>
+    </div>
+  </section>
+
+  <section id="starter">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>1:1 對談話題卡</h2>
+        <p>不知道 1:1 該聊什麼？選好角色與主題，抽一個好問題。</p>
+      </div>
+      <div class="starter">
+        <div class="pick">
+          <label>我是 <select id="cardRole"><option value="mgr">主管</option><option value="sub">部屬</option></select></label>
+          <label>主題 <select id="cardCat"></select></label>
+        </div>
+        <div id="topic">按下按鈕，抽一個話題吧。</div>
+        <button class="btn" id="draw">抽話題</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="wrap">
+      <div class="sec-head"><h2>四個上下溝通原則</h2></div>
+      <div class="principles">
+        <div class="pr"><div class="n">01</div><h3>說清楚「為什麼」與「標準」</h3><p>交辦時講目的、期限與品質標準，能避免大部分「我以為」的落差。</p></div>
+        <div class="pr"><div class="n">02</div><h3>回饋對事不對人</h3><p>描述行為與影響，而不是評價個性。「這份文件有錯」而非「你太粗心」。</p></div>
+        <div class="pr"><div class="n">03</div><h3>建立心理安全感</h3><p>讓部屬敢說「我不懂」和「我有不同看法」，問題才會及早浮現。</p></div>
+        <div class="pr"><div class="n">04</div><h3>主動向上管理</h3><p>部屬定期同步進度、提出選項而不只是問題，主管才會放心放手。</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>世代特徵是社會趨勢的概括，每位主管與部屬都是獨特的個人，請以此作為理解的起點，而非標籤。</p>
+  </div>
+</footer>
+
+<script>
+let role = "mgr"; // mgr = 我是主管, sub = 我是部屬
+
+const gens = [
+  { id: "boomer", emoji: "🏭", name: "嬰兒潮世代", years: "約 1955–1964 年生",
+    work: ["重視忠誠、資歷與穩定", "習慣「做到好」比「說出來」重要", "把加班與吃苦視為負責"],
+    expect: ["尊重階層與流程", "當面或正式場合溝通", "看到對方投入與服從"],
+    misread: "會被年輕人視為「太控制」「不接受新方法」，其實常是想確保品質與風險受控。",
+    mgr: "以「經驗」為底，但為新做法留空間：問「你打算怎麼做？」而不是直接指定方法。",
+    sub: "先說明你已考量的風險與資料，再提出新做法；避免當眾反駁，私下報告更容易被接受。",
+    quote: "我們當年就是這樣做的，現在也行得通。" },
+  { id: "x", emoji: "📼", name: "X 世代", years: "約 1965–1980 年生",
+    work: ["務實、獨立、看結果", "重視承諾與責任", "常夾在上司與年輕人之間"],
+    expect: ["給我目標，讓我自己做", "少開會、少形式", "直接表達，不繞圈"],
+    misread: "常被認為「只講效率、不夠溫度」，其實是不習慣表達情緒，多以行動照顧團隊。",
+    mgr: "明確給目標與資源，然後放手；定期簡短確認，不需要過度監控。",
+    sub: "把事情先做出成果再報告；提問題時附上你的建議方案。",
+    quote: "把結果拿出來，我們再談。" },
+  { id: "y", emoji: "💿", name: "Y 世代（千禧）", years: "約 1981–1995 年生",
+    work: ["重視成長、意義與工作生活平衡", "習慣用數位工具與遠端協作", "敢於詢問「為什麼」"],
+    expect: ["定期回饋與職涯討論", "看得到工作的影響力", "彈性與被信任"],
+    misread: "被說成「太計較」「不夠忠誠」，其實是希望付出與回報、成長之間有清楚的對應。",
+    mgr: "說明任務的目的與影響，定期 1:1 回饋，並討論下一步的成長機會。",
+    sub: "主動報告進度與需要的支援；表達想要成長時，附上具體想學什麼與如何貢獻。",
+    quote: "我願意努力，但想先知道這件事的意義。" },
+  { id: "z", emoji: "📱", name: "Z 世代", years: "約 1996–2009 年生",
+    work: ["重視真實、界線與心理健康", "習慣即時通訊與短影音資訊", "期待多元與包容的環境"],
+    expect: ["清楚的期待與具體回饋", "非同步溝通、尊重下班時間", "被當成夥伴而不只是下屬"],
+    misread: "被貼上「草莓族」「不能吃苦」的標籤，其實多是想用不同方式達成同樣的目標。",
+    mgr: "交辦時給清楚範例與截止時間；回饋要具體、即時、私下，避免用「年輕人就是⋯」開頭。",
+    sub: "不懂就問，別默默卡住；重要事情用完整文字說明，並主動確認雙方的期待。",
+    quote: "請直接告訴我標準是什麼，我會做到。" },
+];
+
+const scenes = [
+  { title: "交辦任務：只說「你處理一下」",
+    mgr: { bad: "「這個你處理一下，週五前給我。」", good: "「這份報告要給客戶做決策，重點是成本比較。週五中午前給我初稿，格式參考上次那份，有問題隨時來問我。」" },
+    sub: { bad: "（不敢問，憑感覺做完交出去）", good: "「我想確認一下目標：這份是給客戶決策用嗎？期限是週五，格式我沿用上次那份，可以嗎？」" },
+    mgrThinks: "主管以為說得很清楚，其實只把「做什麼」交代了，沒有「為什麼」和「標準」。",
+    subThinks: "部屬怕問了顯得自己不夠專業，只好自己猜。",
+    why: "重點是把目的、期限、標準說出來。主管講清楚，部屬也可以主動用「我的理解是⋯，對嗎？」複述確認。" },
+  { title: "部屬想反映工作量太大",
+    mgr: { bad: "「大家都這麼忙，你自己想辦法調整。」", good: "「謝謝你告訴我。我們一起看看目前有哪些任務，哪些可以延後、調整優先順序，或找人支援？」" },
+    sub: { bad: "「我真的做不完，太多了！」", good: "「目前手上有 A、B、C 三件事，我預估需要 X 小時。想和你討論優先順序，看哪一件可以延後？」" },
+    mgrThinks: "主管可能真的不知道部屬的負荷，或擔心是不想做。",
+    subThinks: "部屬怕被視為抱怨，所以拖到撐不住才說。",
+    why: "部屬用數據與選項呈現，不只是說「太多」；主管先接住感受，再一起處理問題，而不是評價對方的能力。" },
+  { title: "指出錯誤：如何給負面回饋",
+    mgr: { bad: "「你怎麼這麼粗心？又搞錯了！」", good: "「這份報表第三頁的數字和來源不一致（事實），客戶可能會質疑資料（影響）。我們一起看看下次怎麼把關？」" },
+    sub: { bad: "「這是因為資料一直變，不是我的問題。」", good: "「你說得對，我會重新確認來源。之後我會在交出前再檢查一次，有需要我也可以先請同事看過。」" },
+    mgrThinks: "主管急著把問題解決，語氣容易帶情緒。",
+    subThinks: "部屬被指責時容易防衛，難以聽進內容。",
+    why: "主管用「事實＋影響＋下一步」，不評論個性；部屬先承認事實，再談改善。可搭配下方的回饋句產生器。" },
+  { title: "部屬提出不同意見",
+    mgr: { bad: "「這是我決定的，照做就好。」", good: "「你的想法是什麼？說說你看到的風險。聽完之後我再決定，就算最後還是照原方案，我也會告訴你原因。」" },
+    sub: { bad: "「這個方法根本行不通，我覺得很不合理。」", good: "「我想確認一下：如果採用這個做法，可能會遇到 X 問題。我有一個替代方案，想請你聽聽看。」" },
+    mgrThinks: "主管把不同意見當成挑戰權威。",
+    subThinks: "部屬覺得說了也沒用，久了就不說。",
+    why: "主管願意聽，才會有人敢說；部屬則從「批評」轉為「提出風險與方案」，更容易被採納。" },
+  { title: "下班後傳訊息",
+    mgr: { bad: "（晚上十點）「明天早上要用，今晚弄好傳給我。」", good: "「明天早上 10 點開會要用這份資料，你方便的話今晚或明早 9 點前給我都可以。」" },
+    sub: { bad: "（已讀不回，隔天什麼都沒說）", good: "「收到，我今晚有事，明早 8:30 前給你。這樣可以嗎？」" },
+    mgrThinks: "主管習慣隨時聯絡，覺得只是「順手說一聲」。",
+    subThinks: "部屬覺得下班時間被侵犯，又不敢拒絕。",
+    why: "主管標示緊急程度與期限；部屬則主動回覆時間，而不是沉默，雙方期待就不會落空。" },
+  { title: "部屬提出加薪或升遷",
+    mgr: { bad: "「你才來多久，想這些太早了吧。」", good: "「謝謝你告訴我你的想法。我們先看看目前的表現與目標，還缺哪些能力，再一起訂一個 6 個月的計畫。」" },
+    sub: { bad: "「別人都升了，我為什麼不行？」", good: "「我想更進一步負責 X 專案。這是我過去半年的成果，想請教你，還需要補足哪些能力，才能達到下一個階段？」" },
+    mgrThinks: "主管擔心無法兌現，所以想先降低期待。",
+    subThinks: "部屬需要知道努力的方向，而不是被拒絕。",
+    why: "主管用具體條件取代模糊的否定；部屬帶著成果與想法談，比比較別人更有說服力。" },
+];
+
+const glossary = [
+  { t: "1on1", from: "職場通用", d: "主管與部屬定期一對一談話，用來回饋、談成長與解決問題，不是單純報進度。" },
+  { t: "畫大餅", from: "職場用語", d: "承諾未來的好處（加薪、升遷）卻沒有實際計畫，被視為不誠懇。" },
+  { t: "責任制", from: "職場用語", d: "不論工作時數，只要事情沒做完就得負責。不同世代對「責任制」的認知差異很大。" },
+  { t: "躺平", from: "Y／Z 世代", d: "降低對升遷、加薪的追逐，只做份內的事，換取較低的壓力。" },
+  { t: "安靜離職", from: "Z 世代", d: "人還在崗位上，但只做合約範圍內的事，不再額外付出。" },
+  { t: "摸魚", from: "職場通用", d: "在上班時間做與工作無關的事。主管與部屬對「合理休息」的界線可能不同。" },
+  { t: "心理安全感", from: "管理概念", d: "團隊成員敢提問、犯錯、說出不同意見，而不擔心被責備或排擠。" },
+  { t: "向上管理", from: "管理概念", d: "部屬主動了解主管的期待、同步進度，協助主管做決策。" },
+  { t: "Follow up", from: "外商用語", d: "追蹤後續進度。不同世代對「追」的頻率與語氣感受不同。" },
+  { t: "Deadline", from: "外商用語", d: "截止時間。溝通時建議寫明「幾月幾日幾點」，避免「盡快」「有空」的模糊語。" },
+  { t: "已讀不回", from: "Z 世代／通用", d: "看過訊息卻沒有回覆。職場上可能造成主管的焦慮，建議簡單回「收到」。" },
+  { t: "PUA", from: "職場用語", d: "以貶低、情緒勒索等方式控制對方。主管即使無心，也要留意話語的影響。" },
+  { t: "情緒勞動", from: "心理學", d: "為了工作需要壓抑或調整自己的情緒，常見於服務與管理角色。" },
+  { t: "社畜", from: "Y／Z 世代", d: "自嘲被工作綁住、失去自主的上班族，用來表達疲累。" },
+];
+
+const cards = {
+  mgr: {
+    "回饋": ["最近有什麼事，我做了讓你覺得很有幫助？", "有沒有哪件事，我可以換個方式做，讓你更容易做事？", "我上次給你的回饋，你覺得清楚嗎？有沒有想再問的？"],
+    "成長": ["未來一年你最想學會什麼？", "有哪一件工作讓你覺得最有成就感？我們怎麼多做一點？", "你希望三年後的自己在做什麼？"],
+    "壓力": ["目前手上的事，哪件最讓你有壓力？", "有沒有什麼卡關，是我可以幫你移除的？", "最近的工作量對你來說，是剛好、太多還是太少？"],
+    "合作": ["你覺得團隊目前最需要改善的一件事是什麼？", "你比較喜歡我怎麼追蹤進度：訊息、當面，還是定期會議？", "有沒有哪位同事的做法，值得我們一起學習？"],
+  },
+  sub: {
+    "回饋": ["我上週的表現，有哪一點你希望我再加強？", "我的工作成果符合你的期待嗎？標準是什麼？", "你覺得我可以做什麼，讓你更放心把事情交給我？"],
+    "成長": ["我想往 X 方向發展，你覺得我還需要補強哪些能力？", "有沒有什麼專案，可以讓我多練習？", "我要怎麼做，才能在一年內達到下一個階段？"],
+    "壓力": ["目前有幾件事同時進行，想跟你一起排優先順序。", "我遇到一個卡關，想請你給我一些建議。", "最近工作量偏多，想討論怎麼調整。"],
+    "合作": ["你偏好我用什麼頻率、什麼方式向你報告進度？", "你覺得我們團隊有哪個地方可以更順？", "如果我有不同的想法，你希望我用什麼方式告訴你？"],
+  },
+};
+
+// ===== Role switch (synced across the page) =====
+function renderRoleSwitches() {
+  document.querySelectorAll("[data-role-switch]").forEach(el => {
+    el.innerHTML = `<button data-role="mgr" class="${role === "mgr" ? "on" : ""}">我是主管</button>` +
+                   `<button data-role="sub" class="${role === "sub" ? "on" : ""}">我是部屬</button>`;
+  });
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-role]");
+  if (!b || !b.closest("[data-role-switch]")) return;
+  role = b.dataset.role;
+  renderRoleSwitches(); renderGens(); renderScenes();
+  document.getElementById("cardRole").value = role; renderCats();
+});
+
+// ===== Generations =====
+const genListEl = document.getElementById("genList");
+const genDetailEl = document.getElementById("genDetail");
+let curGen = "y";
+function renderGens() {
+  genListEl.innerHTML = gens.map(g => `
+    <button class="gen ${g.id === curGen ? "active" : ""}" data-id="${g.id}" aria-pressed="${g.id === curGen}">
+      <div class="em">${g.emoji}</div><b>${g.name}</b><small>${g.years}</small>
+    </button>`).join("");
+  const g = gens.find(x => x.id === curGen);
+  const who = role === "mgr" ? `你的部屬是「${g.name}」` : `你的主管是「${g.name}」`;
+  const tip = role === "mgr" ? g.mgr : g.sub;
+  genDetailEl.innerHTML = `
+    <div class="full quote">「${g.quote}」</div>
+    <div><h3>工作價值觀</h3><ul>${g.work.map(v => `<li>${v}</li>`).join("")}</ul></div>
+    <div><h3>對主管／組織的期待</h3><ul>${g.expect.map(v => `<li>${v}</li>`).join("")}</ul></div>
+    <div class="full"><h3>常見的誤解</h3><p>${g.misread}</p></div>
+    <div class="full todo"><h3>${who}時，你可以這樣做</h3><p>${tip}</p></div>`;
+}
+genListEl.addEventListener("click", e => {
+  const b = e.target.closest("[data-id]");
+  if (!b) return;
+  curGen = b.dataset.id; renderGens();
+});
+
+// ===== Scenarios =====
+const scenListEl = document.getElementById("scenList");
+function renderScenes() {
+  const me = role === "mgr" ? "主管" : "部屬";
+  const other = role === "mgr" ? "部屬" : "主管";
+  scenListEl.innerHTML = scenes.map((s, i) => {
+    const mine = s[role];
+    const theirs = role === "mgr" ? s.subThinks : s.mgrThinks;
+    return `
+    <details class="scn" ${i === 0 ? "open" : ""}>
+      <summary>${s.title}</summary>
+      <div class="body">
+        <div class="bubble bad"><b>😣 容易起衝突（${me}）</b>${mine.bad}</div>
+        <div class="bubble good"><b>😊 更容易被接受（${me}）</b>${mine.good}</div>
+        <div class="note other">👀 <b>${other}可能的想法：</b>${theirs}</div>
+        <div class="note">💡 ${s.why}</div>
+      </div>
+    </details>`;
+  }).join("");
+}
+
+// ===== Feedback builder =====
+const $ = id => document.getElementById(id);
+function buildFeedback() {
+  const s = $("fbS").value.trim(), b = $("fbB").value.trim(), i = $("fbI").value.trim(), n = $("fbN").value.trim();
+  const type = $("fbType").value;
+  if (!s && !b && !i) { $("fbOut").textContent = "請先填寫至少一個欄位。"; return; }
+  let out = "";
+  if (type === "improve") {
+    out = `${s ? s + "，" : ""}${b ? "我注意到" + b + "。" : ""}${i ? "這造成" + i + "。" : ""}${n ? "\n\n" + n : ""}`;
+  } else {
+    out = `${s ? s + "，" : ""}${b ? "你" + b + "。" : ""}${i ? "這讓" + i + "，" : ""}${"我很感謝你。"}${n ? "\n\n" + n : ""}`;
+  }
+  $("fbOut").textContent = out;
+}
+["fbType", "fbS", "fbB", "fbI", "fbN"].forEach(id => $(id).addEventListener("input", buildFeedback));
+$("copyBtn").addEventListener("click", async () => {
+  const btn = $("copyBtn");
+  try { await navigator.clipboard.writeText($("fbOut").textContent); btn.textContent = "已複製 ✓"; }
+  catch { btn.textContent = "請手動選取複製"; }
+  setTimeout(() => btn.textContent = "複製句子", 1600);
+});
+
+// ===== Glossary =====
+const glossEl = $("gloss");
+function renderGloss(q = "") {
+  const k = q.trim().toLowerCase();
+  const list = glossary.filter(x => !k || x.t.toLowerCase().includes(k) || x.d.includes(k));
+  glossEl.innerHTML = list.length
+    ? list.map(x => `<div class="term"><div class="from">${x.from}</div><h4>${x.t}</h4><p>${x.d}</p></div>`).join("")
+    : `<p class="empty">找不到相關用語，試試其他關鍵字。</p>`;
+}
+$("q").addEventListener("input", e => renderGloss(e.target.value));
+
+// ===== 1:1 cards =====
+const cardRoleEl = $("cardRole"), cardCatEl = $("cardCat");
+function renderCats() {
+  const cur = cardCatEl.value;
+  cardCatEl.innerHTML = Object.keys(cards[cardRoleEl.value]).map(c => `<option>${c}</option>`).join("");
+  if (cur && cards[cardRoleEl.value][cur]) cardCatEl.value = cur;
+}
+cardRoleEl.addEventListener("change", () => { role = cardRoleEl.value; renderRoleSwitches(); renderGens(); renderScenes(); renderCats(); });
+let lastTopic = "";
+$("draw").addEventListener("click", () => {
+  const pool = cards[cardRoleEl.value][cardCatEl.value];
+  let t;
+  do { t = pool[Math.floor(Math.random() * pool.length)]; } while (pool.length > 1 && t === lastTopic);
+  lastTopic = t;
+  $("topic").textContent = t;
+});
+
+renderRoleSwitches(); renderGens(); renderScenes(); buildFeedback(); renderGloss(); renderCats();
+</script>
+</body>
+</html>
