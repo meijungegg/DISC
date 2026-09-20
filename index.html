@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DISC 職場溝通</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+:root {
+  --bg: #F1F4F8;
+  --surface: #FFFFFF;
+  --surface-2: #F7F9FB;
+  --ink: #132033;
+  --muted: #566378;
+  --line: #D8DFE8;
+  --focus: #2F6ED0;
+
+  --d: #D6432A; --d-ink: #B3301A; --on-d: #FFFFFF;
+  --i: #F0AE0B; --i-ink: #86570A; --on-i: #2B1D00;
+  --s: #2F9E6E; --s-ink: #1B7350; --on-s: #FFFFFF;
+  --c: #2F6ED0; --c-ink: #2456A8; --on-c: #FFFFFF;
+
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Noto Sans TC", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1520; --surface: #162131; --surface-2: #1B283A;
+    --ink: #E8EDF4; --muted: #9AA7B8; --line: #2A384C; --focus: #6BA1F7;
+    --d: #F0684F; --d-ink: #FF8F7A; --on-d: #2A0A03;
+    --i: #F5BE3D; --i-ink: #F7C955; --on-i: #2B1D00;
+    --s: #4CC792; --s-ink: #6DDBA9; --on-s: #04200F;
+    --c: #6BA1F7; --c-ink: #8DB8FA; --on-c: #071A3A;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1520; --surface: #162131; --surface-2: #1B283A;
+  --ink: #E8EDF4; --muted: #9AA7B8; --line: #2A384C; --focus: #6BA1F7;
+  --d: #F0684F; --d-ink: #FF8F7A; --on-d: #2A0A03;
+  --i: #F5BE3D; --i-ink: #F7C955; --on-i: #2B1D00;
+  --s: #4CC792; --s-ink: #6DDBA9; --on-s: #04200F;
+  --c: #6BA1F7; --c-ink: #8DB8FA; --on-c: #071A3A;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(64px + env(safe-area-inset-top, 0px)); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 400 16px/1.7 var(--font-body);
+  padding-inline: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.25; }
+
+[data-s="D"] { --x: var(--d); --xi: var(--d-ink); --on: var(--on-d); }
+[data-s="I"] { --x: var(--i); --xi: var(--i-ink); --on: var(--on-i); }
+[data-s="S"] { --x: var(--s); --xi: var(--s-ink); --on: var(--on-s); }
+[data-s="C"] { --x: var(--c); --xi: var(--c-ink); --on: var(--on-c); }
+
+.wrap { max-width: 1080px; margin-inline: auto; }
+.eyebrow { font: 600 12px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+/* nav */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  margin-inline: -16px; padding: 10px 16px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { font: 800 20px/1 var(--font-display); letter-spacing: .02em; }
+.brand span:nth-child(1){color:var(--d-ink)} .brand span:nth-child(2){color:var(--i-ink)}
+.brand span:nth-child(3){color:var(--s-ink)} .brand span:nth-child(4){color:var(--c-ink)}
+.nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.nav a { display: block; padding: 6px 12px; border-radius: 999px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+.nav a:hover { background: var(--surface); color: var(--ink); }
+
+/* hero */
+.hero { padding-block: 44px 28px; display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; }
+.wordmark { font: 800 clamp(72px, 15vw, 132px)/.9 var(--font-display); letter-spacing: -.03em; display: flex; }
+.wordmark span:nth-child(1){color:var(--d)} .wordmark span:nth-child(2){color:var(--i)}
+.wordmark span:nth-child(3){color:var(--s)} .wordmark span:nth-child(4){color:var(--c)}
+.hero h1 { font-size: clamp(24px, 4vw, 34px); font-weight: 900; margin-top: 18px; }
+.hero p.lead { color: var(--muted); margin-top: 12px; max-width: 34em; }
+.route { display: grid; gap: 10px; }
+.route > .eyebrow { margin-bottom: 4px; }
+.route button {
+  display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 14px;
+  text-align: left; padding: 14px 16px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 12px;
+  transition: border-color .15s, transform .15s;
+}
+.route button:hover { border-color: var(--ink); transform: translateX(3px); }
+.route .glyph { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: var(--ink); color: var(--bg); font: 600 22px/1 var(--font-mono); }
+.route b { display: block; font-size: 17px; font-weight: 700; }
+.route small { color: var(--muted); font-size: 13px; }
+.route .go { color: var(--muted); font: 500 18px/1 var(--font-mono); }
+
+/* sections */
+section { padding-block: 44px; }
+.sec-head { display: grid; gap: 8px; margin-bottom: 24px; max-width: 42em; }
+.sec-head h2 { font-size: clamp(24px, 3.6vw, 32px); font-weight: 900; }
+.sec-head p { color: var(--muted); }
+
+/* four styles as a 2x2 compass */
+.compass { display: grid; grid-template-columns: 28px 1fr 1fr; grid-template-rows: auto 1fr 1fr; gap: 12px; }
+.ax { color: var(--muted); font: 500 12px/1.2 var(--font-mono); letter-spacing: .08em; display: flex; align-items: center; justify-content: center; }
+.ax.v { writing-mode: vertical-rl; }
+.ax.top-l { grid-row: 1; grid-column: 2; } .ax.top-r { grid-row: 1; grid-column: 3; }
+.p-D { grid-column: 2; grid-row: 2; } .p-I { grid-column: 3; grid-row: 2; } .p-C { grid-column: 2; grid-row: 3; } .p-S { grid-column: 3; grid-row: 3; }
+.ax.left-t { grid-column: 1; grid-row: 2; } .ax.left-b { grid-column: 1; grid-row: 3; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 22px; display: grid; gap: 14px; align-content: start;
+  border-top: 5px solid var(--x);
+}
+.card .top { display: flex; align-items: baseline; gap: 12px; }
+.card .letter { font: 800 56px/.85 var(--font-display); color: var(--xi); }
+.card h3 { font-size: 20px; font-weight: 900; }
+.card .en { font: 500 12px/1 var(--font-mono); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: 4px; }
+.kws { display: flex; flex-wrap: wrap; gap: 6px; }
+.kws span { padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 500; background: color-mix(in srgb, var(--x) 16%, var(--surface)); color: var(--xi); }
+.card dl { margin: 0; display: grid; gap: 10px; font-size: 15px; }
+.card dt { font: 600 11px/1 var(--font-mono); letter-spacing: .12em; color: var(--muted); margin-bottom: 3px; }
+.card dd { margin: 0; }
+
+/* animal avatars */
+.avatar { display: inline-grid; place-items: center; flex: none; width: 44px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: color-mix(in srgb, var(--x) 20%, var(--surface)); }
+.avatar svg { width: 100%; height: 100%; display: block; }
+.avatar.mid { width: 60px; } .avatar.big { width: 84px; }
+.zoo { display: flex; flex-wrap: wrap; gap: 14px 20px; margin-top: 22px; }
+.zoo > div { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; line-height: 1.2; }
+.zoo small { display: block; font: 600 11px/1.4 var(--font-mono); letter-spacing: .1em; color: var(--xi); }
+.card .top { align-items: center; }
+.card h3 { display: flex; align-items: center; gap: 8px; }
+.tag { font: 800 13px/1 var(--font-display); padding: 4px 8px; border-radius: 6px; background: var(--x); color: var(--on); }
+.why { font-size: 14px; color: var(--muted); margin-top: -4px; }
+.why b { color: var(--xi); }
+.chip .avatar { width: 36px; background: var(--surface); }
+.chip .cl small { display: block; font-weight: 500; font-size: 12px; opacity: .8; }
+.pill .avatar { width: 32px; }
+.rhead { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+
+/* quiz */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+.quiz { padding: clamp(16px, 3vw, 28px); }
+.progress { position: sticky; top: calc(56px + env(safe-area-inset-top, 0px)); z-index: 5; display: flex; align-items: center; gap: 12px; padding: 10px 0 14px; background: var(--surface); }
+.progress .track { flex: 1; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.progress .fill { height: 100%; width: 0; background: var(--ink); border-radius: 99px; transition: width .25s; }
+.progress output { font: 600 13px/1 var(--font-mono); color: var(--muted); min-width: 4.5em; text-align: right; }
+.qs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+fieldset { border: 1px solid var(--line); border-radius: 12px; margin: 0; padding: 14px 16px 10px; min-width: 0; background: var(--surface-2); }
+legend { padding: 0 8px; font-weight: 700; font-size: 15px; }
+legend em { font: 600 12px/1 var(--font-mono); font-style: normal; color: var(--muted); margin-right: 8px; }
+.opt { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; margin-inline: -6px; border-radius: 8px; cursor: pointer; font-size: 15px; line-height: 1.5; }
+.opt:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.opt input { margin: 4px 0 0; accent-color: var(--ink); flex: none; width: 16px; height: 16px; }
+.opt:has(input:checked) { background: color-mix(in srgb, var(--ink) 10%, transparent); font-weight: 500; }
+.quiz-foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 20px; }
+.btn { border: 0; border-radius: 10px; padding: 12px 22px; font-weight: 700; background: var(--ink); color: var(--bg); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn.ghost:hover { border-color: var(--ink); }
+
+.result { margin-top: 20px; padding: clamp(16px, 3vw, 28px); display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
+.result[hidden] { display: none; }
+.bars { display: grid; gap: 12px; }
+.bar { display: grid; grid-template-columns: 34px 5.5em 1fr 3em; gap: 10px; align-items: center; font-size: 14px; }
+.bar .badge { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 8px; background: var(--x); color: var(--on); font: 800 17px/1 var(--font-display); }
+.bar .t { height: 14px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.bar .t i { display: block; height: 100%; background: var(--x); border-radius: 99px; transition: width .5s; }
+.bar b { font: 600 13px/1 var(--font-mono); text-align: right; }
+.result h3 { font-size: 22px; font-weight: 900; }
+.result p { color: var(--muted); margin-top: 8px; }
+.result .btn { margin-top: 16px; }
+.hint { color: var(--muted); font-size: 14px; }
+
+/* guide */
+.controls { padding: clamp(16px, 3vw, 24px); display: grid; gap: 18px; }
+.row { display: grid; grid-template-columns: 5.5em 1fr; gap: 14px; align-items: center; }
+.row > label, .row > .lab { font: 600 12px/1.3 var(--font-mono); letter-spacing: .1em; color: var(--muted); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 5px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; }
+.seg button { border: 0; background: transparent; padding: 9px 8px; border-radius: 8px; font-weight: 700; font-size: 15px; line-height: 1.3; }
+.seg button small { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.seg button[aria-pressed="true"] small { color: color-mix(in srgb, var(--bg) 75%, transparent); }
+.chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.chip { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); text-align: left; font-weight: 700; font-size: 15px; }
+.chip i { font: 800 18px/1 var(--font-display); font-style: normal; color: var(--xi); width: 1.1em; text-align: center; }
+.chip:hover { border-color: var(--x); }
+.chip[aria-pressed="true"] { background: var(--x); border-color: var(--x); color: var(--on); }
+.chip[aria-pressed="true"] i { color: var(--on); }
+
+.out { margin-top: 18px; padding: clamp(16px, 3vw, 28px); display: grid; gap: 22px; }
+.out-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px; background: color-mix(in srgb, var(--x) 16%, var(--surface)); font-weight: 700; }
+.pill i { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--x); color: var(--on); font: 800 15px/1 var(--font-display); font-style: normal; }
+.arrow { font: 500 20px/1 var(--font-mono); color: var(--muted); }
+.role { color: var(--muted); font-size: 14px; flex-basis: 100%; }
+.blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 32px; }
+.blk h4 { margin: 0 0 8px; font: 600 12px/1 var(--font-mono); letter-spacing: .12em; color: var(--muted); }
+.blk p { font-size: 16px; }
+.blk.wide { grid-column: 1 / -1; }
+.blk ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.blk li { position: relative; padding-left: 26px; }
+.blk.do li::before, .blk.dont li::before { position: absolute; left: 0; top: 0; font: 700 15px/1.7 var(--font-mono); }
+.blk.do li::before { content: "+"; color: var(--s-ink); }
+.blk.dont li::before { content: "−"; color: var(--d-ink); }
+blockquote { margin: 0; padding: 16px 18px; border-radius: 10px; background: color-mix(in srgb, var(--x) 12%, var(--surface)); border-left: 4px solid var(--x); font-size: 17px; font-weight: 500; line-height: 1.75; }
+.note-you { padding: 14px 16px; border-radius: 10px; background: var(--surface-2); border: 1px dashed var(--line); }
+
+/* feedback */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.fb { padding: clamp(16px, 3vw, 28px); display: grid; gap: 20px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label, .group legend { font-weight: 700; font-size: 15px; }
+.req { margin-left: 8px; font: 600 11px/1 var(--font-mono); letter-spacing: .1em; color: var(--d-ink); }
+.field input, .field select, .field textarea { width: 100%; font: inherit; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.field textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline-offset: 0; border-color: var(--focus); }
+.group { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 10px; background: none; }
+.group legend { padding: 0; margin-bottom: 10px; }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); cursor: pointer; font-size: 15px; }
+.choice:hover { border-color: var(--ink); }
+.choice input { accent-color: var(--ink); width: 15px; height: 15px; margin: 0; }
+.choice:has(input:checked) { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.choice:has(input:checked) input { accent-color: var(--bg); }
+.rate .choice { min-width: 64px; justify-content: center; }
+#fbStatus.err { color: var(--d-ink); }
+#fbStatus.ok { color: var(--s-ink); font-weight: 700; }
+.fbadmin { margin-top: 18px; padding: clamp(16px, 3vw, 28px); display: grid; gap: 16px; }
+.fbadmin h3 { font-size: 20px; font-weight: 900; }
+.fbsum { display: flex; flex-wrap: wrap; gap: 28px; }
+.fbsum b { display: block; font: 800 34px/1 var(--font-display); }
+.fbsum small { color: var(--muted); font-size: 13px; }
+.fblist { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; }
+.fblist li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); display: grid; gap: 6px; }
+.fbmeta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; color: var(--muted); }
+.fbmeta b { color: var(--ink); font-size: 15px; }
+.fbtext { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 820px) { .fields { grid-template-columns: 1fr; } }
+
+footer { padding-block: 28px 56px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); max-width: 1080px; margin-inline: auto; }
+
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; gap: 28px; padding-block: 28px 12px; }
+  .qs, .result, .blocks { grid-template-columns: 1fr; }
+  .chips { grid-template-columns: 1fr 1fr; }
+  .row { grid-template-columns: 1fr; gap: 8px; }
+}
+@media (max-width: 560px) {
+  .nav a { padding: 6px 8px; }
+  .compass { grid-template-columns: 1fr; grid-template-rows: none; }
+  .ax { display: none; }
+  .card { grid-column: auto !important; grid-row: auto !important; }
+  .bar { grid-template-columns: 34px 1fr 3em; }
+  .bar .nm { display: none; }
+  .bar .t { grid-column: 2; }
+  .seg button small { display: none; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="a-D" viewBox="0 0 100 100">
+      <circle cx="21" cy="27" r="11" fill="#E8791A"/><circle cx="79" cy="27" r="11" fill="#E8791A"/>
+      <circle cx="21" cy="28" r="5.5" fill="#FFE1BE"/><circle cx="79" cy="28" r="5.5" fill="#FFE1BE"/>
+      <ellipse cx="50" cy="55" rx="35" ry="33" fill="#F28C28"/>
+      <g stroke="#2A1A0E" stroke-width="4" stroke-linecap="round" fill="none">
+        <path d="M50 24v11"/><path d="M39 27l3 9"/><path d="M61 27l-3 9"/>
+        <path d="M16 50h11"/><path d="M17 61l10-3"/><path d="M84 50H73"/><path d="M83 61l-10-3"/>
+      </g>
+      <ellipse cx="50" cy="69" rx="18" ry="14" fill="#FFF3E2"/>
+      <ellipse cx="37" cy="51" rx="6" ry="4.6" fill="#fff"/><ellipse cx="63" cy="51" rx="6" ry="4.6" fill="#fff"/>
+      <circle cx="38" cy="51" r="2.8" fill="#1E1208"/><circle cx="62" cy="51" r="2.8" fill="#1E1208"/>
+      <path d="M29 43l15 6M71 43l-15 6" stroke="#2A1A0E" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M43.5 62h13l-6.5 7z" fill="#3B2418"/>
+      <path d="M50 69v4M50 73q-5 5-11 2M50 73q5 5 11 2" stroke="#3B2418" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+    </symbol>
+    <symbol id="a-I" viewBox="0 0 100 100">
+      <g id="a-I-f">
+        <g transform="rotate(-72 50 66)"><ellipse cx="50" cy="34" rx="7.5" ry="15" fill="#1C9C88"/><circle cx="50" cy="26" r="4.6" fill="#F2C230"/><circle cx="50" cy="26" r="2.2" fill="#2B4FB0"/></g>
+        <g transform="rotate(-48 50 66)"><ellipse cx="50" cy="34" rx="7.5" ry="15" fill="#1C9C88"/><circle cx="50" cy="26" r="4.6" fill="#F2C230"/><circle cx="50" cy="26" r="2.2" fill="#2B4FB0"/></g>
+        <g transform="rotate(-24 50 66)"><ellipse cx="50" cy="34" rx="7.5" ry="15" fill="#1C9C88"/><circle cx="50" cy="26" r="4.6" fill="#F2C230"/><circle cx="50" cy="26" r="2.2" fill="#2B4FB0"/></g>
+        <g transform="rotate(0 50 66)"><ellipse cx="50" cy="34" rx="7.5" ry="15" fill="#1C9C88"/><circle cx="50" cy="26" r="4.6" fill="#F2C230"/><circle cx="50" cy="26" r="2.2" fill="#2B4FB0"/></g>
+        <g transform="rotate(24 50 66)"><ellipse cx="50" cy="34" rx="7.5" ry="15" fill="#1C9C88"/><circle cx="50" cy="26" r="4.6" fill="#F2C230"/><circle cx="50" cy="26" r="2.2" fill="#2B4FB0"/></g>
+        <g transform="rotate(48 50 66)"><ellipse cx="50" cy="34" rx="7.5" ry="15" fill="#1C9C88"/><circle cx="50" cy="26" r="4.6" fill="#F2C230"/><circle cx="50" cy="26" r="2.2" fill="#2B4FB0"/></g>
+        <g transform="rotate(72 50 66)"><ellipse cx="50" cy="34" rx="7.5" ry="15" fill="#1C9C88"/><circle cx="50" cy="26" r="4.6" fill="#F2C230"/><circle cx="50" cy="26" r="2.2" fill="#2B4FB0"/></g>
+      </g>
+      <ellipse cx="50" cy="84" rx="16" ry="18" fill="#2A62D0"/>
+      <circle cx="50" cy="62" r="15" fill="#2F6FE0"/>
+      <g stroke="#1B3F96" stroke-width="2" stroke-linecap="round"><path d="M50 48v-11"/><path d="M44 49l-6-9"/><path d="M56 49l6-9"/></g>
+      <circle cx="50" cy="35" r="2.8" fill="#F2C230"/><circle cx="37.6" cy="39" r="2.4" fill="#F2C230"/><circle cx="62.4" cy="39" r="2.4" fill="#F2C230"/>
+      <circle cx="44" cy="60" r="3.6" fill="#fff"/><circle cx="56" cy="60" r="3.6" fill="#fff"/>
+      <circle cx="44.6" cy="60.4" r="1.8" fill="#10203F"/><circle cx="55.4" cy="60.4" r="1.8" fill="#10203F"/>
+      <path d="M45.5 66h9l-4.5 8z" fill="#F4B32C"/>
+    </symbol>
+    <symbol id="a-S" viewBox="0 0 100 100">
+      <circle cx="18" cy="40" r="16" fill="#A3AAB6"/><circle cx="82" cy="40" r="16" fill="#A3AAB6"/>
+      <circle cx="18" cy="40" r="9" fill="#F3E4E9"/><circle cx="82" cy="40" r="9" fill="#F3E4E9"/>
+      <ellipse cx="50" cy="55" rx="31" ry="30" fill="#BCC2CC"/>
+      <ellipse cx="50" cy="66" rx="17" ry="12" fill="#D9DDE4"/>
+      <circle cx="38" cy="51" r="3.3" fill="#22242D"/><circle cx="62" cy="51" r="3.3" fill="#22242D"/>
+      <circle cx="39" cy="50" r="1" fill="#fff"/><circle cx="63" cy="50" r="1" fill="#fff"/>
+      <circle cx="30" cy="62" r="5" fill="#F2B6BE" opacity=".6"/><circle cx="70" cy="62" r="5" fill="#F2B6BE" opacity=".6"/>
+      <ellipse cx="50" cy="59" rx="8.5" ry="11.5" fill="#2A2C37"/>
+      <ellipse cx="47" cy="54" rx="2.4" ry="3.4" fill="#5A5D6E"/>
+      <path d="M45 76q5 4 10 0" stroke="#4B4E5C" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </symbol>
+    <symbol id="a-C" viewBox="0 0 100 100">
+      <path d="M20 34L26 12L43 25z" fill="#7A4F30"/><path d="M80 34L74 12L57 25z" fill="#7A4F30"/>
+      <ellipse cx="50" cy="55" rx="35" ry="36" fill="#8E603C"/>
+      <path d="M38 84q6 5 12 0q6 5 12 0" stroke="#D9B48A" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <path d="M50 22l0 11" stroke="#6A4128" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="35" cy="50" r="17" fill="#F5E7CF"/><circle cx="65" cy="50" r="17" fill="#F5E7CF"/>
+      <circle cx="35" cy="50" r="11.5" fill="#F2B23C"/><circle cx="65" cy="50" r="11.5" fill="#F2B23C"/>
+      <circle cx="35" cy="50" r="6" fill="#1B1410"/><circle cx="65" cy="50" r="6" fill="#1B1410"/>
+      <circle cx="37.4" cy="47.6" r="2" fill="#fff"/><circle cx="67.4" cy="47.6" r="2" fill="#fff"/>
+      <path d="M44.5 56h11l-5.5 12z" fill="#E88A26"/>
+    </symbol>
+  </defs>
+</svg>
+<div class="nav"><div class="wrap">
+  <div class="brand" aria-label="DISC"><span>D</span><span>I</span><span>S</span><span>C</span></div>
+  <ul>
+    <li><a href="#types">四種風格</a></li>
+    <li><a href="#quiz">自我測驗</a></li>
+    <li><a href="#guide">溝通指南</a></li>
+    <li><a href="#feedback">意見回饋</a></li>
+  </ul>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <div>
+      <div class="wordmark" aria-hidden="true"><span>D</span><span>I</span><span>S</span><span>C</span></div>
+      <h1>跟主管、部屬、同事，說對方聽得進去的話</h1>
+      <p class="lead">DISC 把人的行為傾向分成四種。先看懂自己與對方各是哪一型，再依溝通方向調整說法：上對下怎麼交辦、下對上怎麼報告、平行之間怎麼協作。</p>
+      <div class="zoo" id="zoo"></div>
+    </div>
+    <div class="route">
+      <div class="eyebrow">你現在要跟誰溝通？</div>
+      <button type="button" data-dir="down"><span class="glyph" aria-hidden="true">↓</span><span><b>上對下</b><small>我是主管，要帶部屬</small></span><span class="go" aria-hidden="true">→</span></button>
+      <button type="button" data-dir="up"><span class="glyph" aria-hidden="true">↑</span><span><b>下對上</b><small>我是部屬，要向主管報告</small></span><span class="go" aria-hidden="true">→</span></button>
+      <button type="button" data-dir="peer"><span class="glyph" aria-hidden="true">↔</span><span><b>平行溝通</b><small>同儕、跨部門協作</small></span><span class="go" aria-hidden="true">→</span></button>
+    </div>
+  </header>
+
+  <section id="types">
+    <div class="sec-head">
+      <div class="eyebrow">Four styles</div>
+      <h2>四種風格，一張圖看懂</h2>
+      <p>橫軸看重「事」或「人」，縱軸看步調偏快或偏穩。每個人都是混合體，只是某一型比較突出。</p>
+    </div>
+    <div class="compass" id="compass"></div>
+  </section>
+
+  <section id="quiz">
+    <div class="sec-head">
+      <div class="eyebrow">Self check · 12 題</div>
+      <h2>先知道自己是哪一型</h2>
+      <p>每題選一個「最像平常的我」的答案，不必想太久。這是行為傾向的參考，不是人格診斷，也不適合用來評價或篩選人。</p>
+    </div>
+    <form class="panel quiz" id="quizForm" onsubmit="return false">
+      <div class="progress"><div class="track"><div class="fill" id="fill"></div></div><output id="count">0 / 12</output></div>
+      <div class="qs" id="qs"></div>
+      <div class="quiz-foot">
+        <button class="btn" type="button" id="submitQuiz" disabled>看我的結果</button>
+        <button class="btn ghost" type="button" id="resetQuiz">重做</button>
+        <span class="hint" id="quizHint">回答完 12 題即可查看結果。</span>
+      </div>
+    </form>
+    <div class="panel result" id="result" hidden aria-live="polite"></div>
+  </section>
+
+  <section id="guide">
+    <div class="sec-head">
+      <div class="eyebrow">Communication guide</div>
+      <h2>選好方向與雙方風格，直接拿到說法</h2>
+      <p>不確定對方是哪一型時，看他在壓力下的反應與開會時的習慣（見上方四張卡）。</p>
+    </div>
+    <div class="panel controls">
+      <div class="row"><span class="lab" id="labDir">溝通方向</span>
+        <div class="seg" id="dirSeg" role="group" aria-labelledby="labDir"></div></div>
+      <div class="row"><span class="lab" id="labMe">我是</span>
+        <div class="chips" id="meChips" role="group" aria-labelledby="labMe"></div></div>
+      <div class="row"><span class="lab" id="labThem">對方是</span>
+        <div class="chips" id="themChips" role="group" aria-labelledby="labThem"></div></div>
+    </div>
+    <div class="panel out" id="out" aria-live="polite"></div>
+  </section>
+  <section id="feedback">
+    <div class="sec-head">
+      <div class="eyebrow">Feedback</div>
+      <h2>對我的幫助與建議</h2>
+      <p>你的回饋會送到後台資料庫，只有管理者看得到。</p>
+    </div>
+    <form class="panel fb" id="fbForm" novalidate>
+      <div class="fields">
+        <div class="field"><label for="fbName">暱稱（選填）</label><input id="fbName" name="fbName" type="text" maxlength="30" autocomplete="off" placeholder="例如：小明"></div>
+        <div class="field"><label for="fbType">我的 DISC 類型（選填）</label>
+          <select id="fbType" name="fbType"><option value="">還不確定</option><option value="D">D 掌控型・老虎</option><option value="I">I 影響型・孔雀</option><option value="S">S 穩健型・無尾熊</option><option value="C">C 謹慎型・貓頭鷹</option></select></div>
+      </div>
+      <fieldset class="group"><legend>最常用到哪個溝通方向？</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="fbDir" value="down" id="fbDirDown">上對下</label>
+          <label class="choice"><input type="radio" name="fbDir" value="up" id="fbDirUp">下對上</label>
+          <label class="choice"><input type="radio" name="fbDir" value="peer" id="fbDirPeer">平行</label>
+        </div></fieldset>
+      <fieldset class="group"><legend>整體來說，這個頁面對你有幫助嗎？<span class="req">必填</span></legend>
+        <div class="choices rate">
+          <label class="choice"><input type="radio" name="fbRate" value="1" id="fbRate1">1</label>
+          <label class="choice"><input type="radio" name="fbRate" value="2" id="fbRate2">2</label>
+          <label class="choice"><input type="radio" name="fbRate" value="3" id="fbRate3">3</label>
+          <label class="choice"><input type="radio" name="fbRate" value="4" id="fbRate4">4</label>
+          <label class="choice"><input type="radio" name="fbRate" value="5" id="fbRate5">5</label>
+        </div>
+        <p class="hint">1 = 沒什麼幫助，5 = 非常有幫助</p></fieldset>
+      <fieldset class="group"><legend>哪些內容最有幫助？（可複選）</legend>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" name="fbHelp" value="types" id="fbHelpTypes">四種風格介紹</label>
+          <label class="choice"><input type="checkbox" name="fbHelp" value="quiz" id="fbHelpQuiz">自我測驗</label>
+          <label class="choice"><input type="checkbox" name="fbHelp" value="guide" id="fbHelpGuide">溝通指南的說法</label>
+          <label class="choice"><input type="checkbox" name="fbHelp" value="animals" id="fbHelpAnimals">動物圖像</label>
+        </div></fieldset>
+      <div class="field"><label for="fbText">想說的話或建議</label>
+        <textarea id="fbText" name="fbText" rows="5" maxlength="1000" placeholder="例如：希望多一些「跨部門衝突」的情境說法。"></textarea></div>
+      <div class="hp" aria-hidden="true"><label for="fbWebsite">網站</label><input id="fbWebsite" name="fbWebsite" type="text" tabindex="-1" autocomplete="off"></div>
+      <div class="quiz-foot">
+        <button class="btn" type="submit" id="fbSubmit">送出回饋</button>
+        <span class="hint" id="fbStatus" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer>DISC 描述的是行為傾向，會因情境、角色與壓力而改變；此頁的測驗為簡易版，僅供溝通練習與自我覺察，不作為心理評估、績效考核或人才篩選依據。</footer>
+
+<script>
+const ORDER = ["D", "I", "S", "C"];
+const TYPES = {
+  D: { name: "掌控型", animal: "老虎", why: "果斷有氣勢，習慣站在最前面帶頭衝。", en: "Dominance", kw: ["果斷", "重結果", "速度快", "愛挑戰"],
+       care: "成效、掌控權、效率", stress: "變得強勢、打斷別人、跳過細節", tell: "開會直接問：「所以結論是什麼？」" },
+  I: { name: "影響型", animal: "孔雀", why: "愛展現、受矚目，走到哪都是焦點。", en: "Influence", kw: ["熱情", "擅表達", "點子多", "重氣氛"],
+       care: "被看見、被認同、有趣的互動", stress: "話變多、情緒外顯、承諾過頭", tell: "先聊近況，愛用故事與比喻。" },
+  S: { name: "穩健型", animal: "無尾熊", why: "溫和不爭，給人安心穩定的感覺。", en: "Steadiness", kw: ["耐心", "可靠", "重協作", "傾聽"],
+       care: "安全感、穩定節奏、被尊重", stress: "表面配合、內心抗拒，遲遲不表態", tell: "先聽大家怎麼說，常回「都可以」。" },
+  C: { name: "謹慎型", animal: "貓頭鷹", why: "觀察入微，凡事先看清楚再行動。", en: "Conscientiousness", kw: ["精確", "重邏輯", "有條理", "高標準"],
+       care: "正確、品質、有依據", stress: "挑錯、追問細節、遲遲不下決定", tell: "問資料來源，習慣要書面。" }
+};
+
+const DIRS = {
+  down: { label: "上對下", sub: "主管 → 部屬", role: "你是主管，對方是你的部屬", them: "部屬" },
+  up:   { label: "下對上", sub: "部屬 → 主管", role: "你是部屬，對方是你的主管", them: "主管" },
+  peer: { label: "平行", sub: "同儕 / 跨部門", role: "你和對方是同儕或跨部門夥伴", them: "同事" }
+};
+
+/* 對方在該方向下的建議：focus / do / avoid / say */
+const ADVICE = {
+  down: {
+    D: { focus: "想要自主權與挑戰，不喜歡被盯著每個步驟。",
+         do: ["給目標與期限，過程放手", "講清楚授權範圍：哪些可以自己決定", "用成果肯定他，並約好回報時點"],
+         avoid: ["每一步都要求報備", "當眾否定他的做法"],
+         say: "這件事的目標是月底前把退貨率降 10%，做法你決定，週三跟我同步一次進度。" },
+    I: { focus: "需要被看見，有互動與回饋才有動力。",
+         do: ["先肯定，再談問題，最好當眾肯定", "給他分享與發表的舞台", "把期限與細節寫下來，約好檢核點"],
+         avoid: ["只丟一份文件叫他自己看", "長時間不回應、冷處理"],
+         say: "你的點子讓客戶眼睛一亮，下週例會由你分享。報價單的數字我們週二前對一次。" },
+    S: { focus: "需要安全感與穩定節奏，變動前要時間消化。",
+         do: ["變動前先說明原因與影響，給緩衝期", "私下一對一，邀請他說出想法", "肯定他的可靠與配合"],
+         avoid: ["臨時大改，還要求立刻答覆", "把他的沉默當成同意"],
+         say: "下季流程會調整，我先跟你說背景。你有什麼擔心？不用現在回答，週五前告訴我就好。" },
+    C: { focus: "要清楚的標準、足夠的資料與準備時間。",
+         do: ["交辦時附上驗收標準與範例", "給他準備時間，別要求即興表態", "回饋具體指出哪裡、怎麼改"],
+         avoid: ["用「大概就好」「你看著辦」交辦", "催他犧牲品質趕時程"],
+         say: "這份報告驗收看三點：資料來源、數字對得上、結論一頁內。你需要多久時間？" }
+  },
+  up: {
+    D: { focus: "要結論、要效率，時間是他最在意的資源。",
+         do: ["先講結論與需要他做的決定，再補理由", "帶 2–3 個選項與你的建議", "有問題帶著解法來，不只報壞消息"],
+         avoid: ["從頭鋪陳背景", "含糊回答「我再看看」"],
+         say: "結論：建議選方案 B，可提前兩週上線。需要您今天決定 30 萬預算，理由有三點。" },
+    I: { focus: "喜歡互動、願景，以及有人味的故事。",
+         do: ["先寒暄與肯定，把氣氛建立起來", "用亮點與案例說明價值", "口頭談完，再用訊息確認待辦與期限"],
+         avoid: ["開場就丟一堆數據與風險", "在眾人面前潑冷水"],
+         say: "這個方向客戶反應很熱烈，我整理了三個亮點。細節與時程我寫成一頁，再跟您確認。" },
+    S: { focus: "重視團隊和諧、穩定，以及被尊重。",
+         do: ["給充足時間，不逼當場決定", "說明變動對團隊的影響與過渡做法", "主動回報進度，減少他的不確定感"],
+         avoid: ["施壓要他立刻拍板", "越級或繞過他"],
+         say: "這個調整我想先跟您討論，不急著今天決定。我整理了對同仁的影響與過渡做法，請您看看。" },
+    C: { focus: "要邏輯、資料與風險評估。",
+         do: ["附數據、來源與時程", "先想好他會追問的細節", "用書面呈現，留時間讓他審閱"],
+         avoid: ["憑感覺說「應該沒問題」", "資料有誤還硬撐"],
+         say: "附上三個月的數據與比較表，風險有兩項，對應方案在第 4 頁。請您審閱後，週四我們對細節。" }
+  },
+  peer: {
+    D: { focus: "想快速拿到結果，容易把協作當成拖累。",
+         do: ["一開始就談目標、分工與時間", "直接說出你需要他做什麼", "有分歧時，用共同目標與數據對話"],
+         avoid: ["跟他比誰音量大", "繞圈子暗示"],
+         say: "這案子週五要上線，我需要你確認 API 規格，我負責測試，這樣分工可以嗎？" },
+    I: { focus: "重視關係與氛圍，喜歡一起腦力激盪。",
+         do: ["先聊兩句，肯定他的貢獻", "讓他先發想，再一起收斂", "把共識與期限寫成會後紀錄"],
+         avoid: ["只用冷冰冰的公事信件", "口頭約定不留紀錄"],
+         say: "你的想法很有感！我們用 20 分鐘把它落成三件事，會後我寄紀錄，大家再對一下期限。" },
+    S: { focus: "想要合作順暢，彼此不被壓迫。",
+         do: ["用商量的口吻，讓他有表達空間", "說明為什麼請他協助、範圍多大", "事後具體道謝"],
+         avoid: ["把他的「好啊」當成真的同意", "臨時插件又不說明"],
+         say: "想請你幫忙這一段，我先說明為什麼卡住。你覺得哪部分可行、哪部分會有負擔？" },
+    C: { focus: "在意流程、規格與正確性。",
+         do: ["用文件、規格與案例說話", "給他足夠的檢查時間", "他指出錯誤時先道謝，再修正"],
+         avoid: ["說「差不多就好」", "情緒化爭論"],
+         say: "我把需求整理成文件與範例，請你看有沒有漏洞。你回覆後，我們對一下落差。" }
+  }
+};
+
+/* 我這一型，在該方向的盲點 */
+const BLIND = {
+  D: { down: "你的快與直接，容易被部屬解讀成「不能質疑」。交辦後刻意問一句「你怎麼看？」，並真的等他回答。",
+       up: "別用結論口吻壓過主管。把「我的判斷」和「需要您決定的事」分開講。",
+       peer: "同儕不歸你管，用請求取代指令，先問對方目前的優先順序。" },
+  I: { down: "熱情的口頭承諾與交辦容易被遺忘。交辦後用一句文字再確認一次。",
+       up: "主管要的是重點。把故事縮成 30 秒，先講結論。",
+       peer: "別一口答應太多。先看行事曆，再回覆「我確認後給你時間」。" },
+  S: { down: "部屬看不出你真正的想法。把期待與底線講明白，不要只靠暗示。",
+       up: "別只回「好的」。有疑慮就主動提，附上你的想法與替代方案。",
+       peer: "不要因為怕衝突全接下來。適度說：「這部分我做不到，但我可以……」" },
+  C: { down: "別把標準藏在腦中。交辦時說清楚驗收條件，也容許「夠好」的版本。",
+       up: "別等資料完美才回報。先給進度與預估風險，讓主管一起參與決策。",
+       peer: "挑錯前先講肯定的部分，指出問題時附上方案，不只列缺失。" }
+};
+
+/* 配對觀察：我 + 對方 */
+const PAIR = {
+  DD: "兩個都想主導，容易變成拉扯。先對齊目標與決策權，把「誰說了算」講清楚。",
+  DI: "你要結果，他要互動。給他表達的空間，但把時間點與產出講明白。",
+  DS: "你的速度會讓他悶著配合。放慢一拍、主動問意見，別把沉默當同意。",
+  DC: "你要快，他要準。給他必要的資料與時間，並先確認品質底線。",
+  ID: "他要結論，你想聊脈絡。先講重點，故事留到後面。",
+  II: "氣氛很好、點子滿天飛，但容易缺少收尾。務必約定誰負責、何時完成。",
+  IS: "相處融洽，但可能都避免說難聽的話。主動把問題與期待攤開來。",
+  IC: "你重感覺，他重證據。準備數據，並尊重他要求細節的習慣。",
+  SD: "他節奏快，你偏穩。先說出你的界線與需要的時間，別默默吞下。",
+  SI: "互動溫暖，但決策可能拖延。主動提出時間表，由一方負責推進。",
+  SS: "和諧，但可能沒有人拍板。指定決策者與截止日，避免議而不決。",
+  SC: "都偏穩重細緻，合作可靠但速度慢。設定里程碑，避免無限期打磨。",
+  CD: "他要快，你要準。用風險與數據說明為什麼需要時間，並提出最短可行版本。",
+  CI: "他天馬行空，你要細節。別急著糾正，先聽完，再一起把想法轉成規格。",
+  CS: "穩定、謹慎，但可能都不表態。明確講出各自立場，並約定決策方式。",
+  CC: "嚴謹對嚴謹，容易陷在細節。先確認「夠好」的標準與完成時點。"
+};
+
+/* 12 題，選項依序為 D I S C，顯示時會輪替順序 */
+const QUIZ = [
+  ["開會時，我通常：", "很快說出結論，推動大家做決定", "帶動氣氛，鼓勵大家多發言", "先聽大家怎麼說，再表達看法", "先確認議程與資料，再發言"],
+  ["接到緊急專案，我第一個反應是：", "立刻定目標、分工，開始行動", "找人一起動腦，凝聚士氣", "先確認影響範圍，穩穩推進", "先蒐集資訊，評估風險與步驟"],
+  ["同事的做法跟我不同時，我會：", "直接說出看法，說服對方", "用聊天化解，找出彼此都喜歡的方向", "先配合，之後私下找機會溝通", "拿出資料與邏輯，比較兩種做法"],
+  ["我最不能忍受的是：", "拖拖拉拉、沒有結果", "被冷落、沒人在意我的想法", "突然的大改變與衝突的氣氛", "粗糙、出錯、沒有依據"],
+  ["收到批評時，我通常：", "想反駁，並立刻找解決辦法", "會很在意，需要被肯定或安慰", "默默承受，回去想很久", "想弄清楚具體哪裡不對，逐項檢視"],
+  ["我的桌面或資料夾比較像：", "只放重點，其他先不管", "有創意，但偶爾有點亂", "有固定位置，維持熟悉的習慣", "分類清楚，檔名與版本都有規則"],
+  ["同事會形容我：", "有魄力、講話直接", "有感染力、好相處", "穩定可靠、好商量", "細心嚴謹、有條理"],
+  ["做決定時，我比較依賴：", "目標與速度：先做再修", "直覺與大家的感受", "對團隊的影響與長期穩定", "數據、事實與風險評估"],
+  ["向主管報告時，我傾向：", "一開始就講結論與需要的資源", "用故事與亮點說服主管", "先確認主管的期待，再穩妥回報", "準備完整資料與備案"],
+  ["團隊出現衝突時，我會：", "直接出面處理，要求各方解決", "出面緩頰，讓大家重新有說有笑", "想辦法安撫，避免撕破臉", "釐清事實，找出流程或規則的問題"],
+  ["我最有動力的時候是：", "挑戰高、目標明確", "被肯定、有舞台", "團隊合作順利、被信任", "能把事情做得完整又正確"],
+  ["面對新制度或新工具，我會：", "先試再說，好用就採用", "覺得新鮮，想找大家一起玩", "先了解會怎麼影響大家，需要適應期", "先看說明文件，弄清楚規則"]
+];
+
+const $ = (s, r = document) => r.querySelector(s);
+const state = { dir: "up", me: "S", them: "D" };
+let lastQuiz = "";
+const av = (k, cls = "") => `<span class="avatar ${cls}" data-s="${k}" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#a-${k}"/></svg></span>`;
+$("#zoo").innerHTML = ORDER.map(k => `<div data-s="${k}">${av(k, "mid")}<span>${TYPES[k].animal}<small>${k} · ${TYPES[k].name}</small></span></div>`).join("");
+
+/* ---- 四型 compass ---- */
+(function renderCompass() {
+  const cell = k => {
+    const t = TYPES[k];
+    return `<article class="card p-${k}" data-s="${k}">
+      <div class="top">${av(k, "big")}<div><h3>${t.name}<span class="tag">${k}</span></h3><div class="en">${t.en}</div></div></div>
+      <p class="why"><b>${t.animal}</b>　${t.why}</p>
+      <div class="kws">${t.kw.map(w => `<span>${w}</span>`).join("")}</div>
+      <dl>
+        <div><dt>在意什麼</dt><dd>${t.care}</dd></div>
+        <div><dt>壓力下的樣子</dt><dd>${t.stress}</dd></div>
+        <div><dt>怎麼認出他</dt><dd>${t.tell}</dd></div>
+      </dl></article>`;
+  };
+  $("#compass").innerHTML =
+    `<span class="ax top-l">重「事」· 任務導向</span><span class="ax top-r">重「人」· 關係導向</span>
+     <span class="ax v left-t">步調快 · 外放</span>${cell("D")}${cell("I")}
+     <span class="ax v left-b">步調穩 · 內斂</span>${cell("C")}${cell("S")}`;
+})();
+
+/* ---- quiz ---- */
+(function renderQuiz() {
+  $("#qs").innerHTML = QUIZ.map((q, i) => {
+    const k = (i * 3) % 4;
+    const opts = ORDER.map((s, j) => ({ s, text: q[j + 1] }));
+    const shown = opts.slice(k).concat(opts.slice(0, k));
+    return `<fieldset><legend><em>Q${i + 1}</em>${q[0]}</legend>` +
+      shown.map((o, j) => `<label class="opt" for="q${i}o${j}"><input type="radio" id="q${i}o${j}" name="q${i}" value="${o.s}"><span>${o.text}</span></label>`).join("") +
+      `</fieldset>`;
+  }).join("");
+})();
+
+const form = $("#quizForm");
+function answered() { return QUIZ.filter((_, i) => form.elements["q" + i].value).length; }
+function updateProgress() {
+  const n = answered();
+  $("#count").textContent = n + " / 12";
+  $("#fill").style.width = (n / 12 * 100) + "%";
+  $("#submitQuiz").disabled = n < 12;
+  $("#quizHint").textContent = n < 12 ? `還有 ${12 - n} 題。` : "全部完成，可以看結果了。";
+}
+form.addEventListener("change", updateProgress);
+$("#resetQuiz").addEventListener("click", () => { form.reset(); updateProgress(); $("#result").hidden = true; });
+
+$("#submitQuiz").addEventListener("click", () => {
+  const counts = { D: 0, I: 0, S: 0, C: 0 };
+  QUIZ.forEach((_, i) => counts[form.elements["q" + i].value]++);
+  const ranked = ORDER.slice().sort((a, b) => counts[b] - counts[a]);
+  const [p, s] = ranked;
+  const blend = counts[s] >= counts[p] - 1 && counts[s] > 0;
+  const tp = TYPES[p];
+  lastQuiz = p;
+  const fbT = $("#fbType"); if (fbT && !fbT.value) fbT.value = p;
+  $("#result").innerHTML = `
+    <div class="bars">${ORDER.map(k => `
+      <div class="bar" data-s="${k}"><span class="badge">${k}</span><span class="nm">${TYPES[k].name}</span>
+      <div class="t"><i style="width:${Math.round(counts[k] / 12 * 100)}%"></i></div><b>${Math.round(counts[k] / 12 * 100)}%</b></div>`).join("")}</div>
+    <div data-s="${p}">
+      <div class="eyebrow">你的主要傾向</div>
+      <div class="rhead">${av(p, "big")}<h3 style="color:var(--xi)">${p}　${tp.name}・${tp.animal}${blend ? `，帶有 ${s} ${TYPES[s].name} 的特質` : ""}</h3></div>
+      <p>${blend ? `${p} 與 ${s} 的分數很接近，你會在情境間切換。` : ""}你在意的是：${tp.care}。壓力大時可能出現：${tp.stress}。</p>
+      <button class="btn" type="button" id="useResult">用這個結果開啟溝通指南</button>
+    </div>`;
+  $("#result").hidden = false;
+  $("#useResult").addEventListener("click", () => { state.me = p; renderGuide(); $("#guide").scrollIntoView(); });
+  $("#result").scrollIntoView({ block: "nearest" });
+});
+
+/* ---- guide ---- */
+function renderControls() {
+  $("#dirSeg").innerHTML = Object.entries(DIRS).map(([k, d]) =>
+    `<button type="button" data-dir="${k}" aria-pressed="${state.dir === k}">${d.label}<small>${d.sub}</small></button>`).join("");
+  const chips = which => ORDER.map(k =>
+    `<button type="button" class="chip" data-s="${k}" data-${which}="${k}" aria-pressed="${state[which] === k}">${av(k)}<span class="cl">${TYPES[k].name}<small>${TYPES[k].animal}</small></span></button>`).join("");
+  $("#meChips").innerHTML = chips("me");
+  $("#themChips").innerHTML = chips("them");
+}
+function renderOut() {
+  const d = DIRS[state.dir], a = ADVICE[state.dir][state.them], me = TYPES[state.me], th = TYPES[state.them];
+  const pill = (k, who) => `<span class="pill" data-s="${k}">${av(k)}${who}・${TYPES[k].name}</span>`;
+  $("#out").innerHTML = `
+    <div class="out-head">${pill(state.me, "我")}<span class="arrow" aria-hidden="true">${state.dir === "up" ? "↑" : state.dir === "down" ? "↓" : "↔"}</span>${pill(state.them, d.them)}
+      <span class="role">${d.label}：${d.role}</span></div>
+    <div class="blocks" data-s="${state.them}">
+      <div class="blk wide"><h4>配對觀察</h4><p>${PAIR[state.me + state.them]}</p></div>
+      <div class="blk"><h4>${d.them}在意什麼</h4><p>${a.focus}</p></div>
+      <div class="blk wide"><h4>可以直接套用的說法</h4><blockquote>${a.say}</blockquote></div>
+      <div class="blk do"><h4>可以這樣做</h4><ul>${a.do.map(x => `<li>${x}</li>`).join("")}</ul></div>
+      <div class="blk dont"><h4>盡量避免</h4><ul>${a.avoid.map(x => `<li>${x}</li>`).join("")}</ul></div>
+      <div class="blk wide" data-s="${state.me}"><div class="note-you"><h4>${me.name}的你，在${d.label}要留意</h4><p>${BLIND[state.me][state.dir]}</p></div></div>
+    </div>`;
+}
+function renderGuide() { renderControls(); renderOut(); }
+renderGuide();
+
+$("#guide").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.dir) state.dir = b.dataset.dir;
+  else if (b.dataset.me) state.me = b.dataset.me;
+  else if (b.dataset.them) state.them = b.dataset.them;
+  else return;
+  renderGuide();
+  const f = document.querySelector(`#guide [data-${b.dataset.dir ? "dir" : b.dataset.me ? "me" : "them"}="${b.dataset.dir || b.dataset.me || b.dataset.them}"]`);
+  if (f) f.focus({ preventScroll: true });
+});
+document.querySelectorAll(".route button").forEach(b => b.addEventListener("click", () => {
+  state.dir = b.dataset.dir; renderGuide(); $("#guide").scrollIntoView();
+}));
+/* ---- feedback form -> Supabase (project: test0920, table: public.feedback) ---- */
+(function feedback() {
+  const SUPABASE_URL = "https://efprnwuipmwowweutvup.supabase.co";
+  // Publishable key: designed to be public in the browser. Row Level Security on
+  // public.feedback allows INSERT only, so this key cannot read, edit or delete rows.
+  const SUPABASE_KEY = "sb_publishable_AbOx_O2OlJ6TVbP76EDrSQ_3Cj669RL";
+
+  const f = $("#fbForm"), st = $("#fbStatus"), btn = $("#fbSubmit");
+  const say = (msg, cls) => { st.textContent = msg; st.className = "hint" + (cls ? " " + cls : ""); };
+
+  f.addEventListener("submit", async e => {
+    e.preventDefault();
+    if (f.elements.fbWebsite.value) { say("已送出，謝謝你的回饋！", "ok"); f.reset(); return; } // honeypot: bots fill this
+    if (!f.elements.fbRate.value) { say("請先選擇 1–5 的整體評分。", "err"); return; }
+    const row = {
+      name: f.elements.fbName.value.trim().slice(0, 30) || null,
+      disc_type: f.elements.fbType.value || null,
+      quiz_type: lastQuiz || null,
+      direction: f.elements.fbDir.value || null,
+      rating: Number(f.elements.fbRate.value),
+      helpful: Array.from(f.querySelectorAll('input[name="fbHelp"]:checked')).map(c => c.value),
+      message: f.elements.fbText.value.trim().slice(0, 1000) || null
+    };
+    btn.disabled = true; say("送出中…");
+    try {
+      const res = await fetch(SUPABASE_URL + "/rest/v1/feedback", {
+        method: "POST",
+        headers: { "apikey": SUPABASE_KEY, "Content-Type": "application/json", "Prefer": "return=minimal" },
+        body: JSON.stringify(row)
+      });
+      if (!res.ok) { console.warn("Supabase insert failed", res.status, await res.text()); throw new Error(String(res.status)); }
+      say("已送出，謝謝你的回饋！", "ok");
+      f.reset();
+    } catch (err) {
+      say(err instanceof TypeError ? "連線失敗，請檢查網路後再試。" : "送出失敗，請稍後再試。", "err");
+    } finally { btn.disabled = false; }
+  });
+})();</script>
+</body>
+</html>
